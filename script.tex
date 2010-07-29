@@ -4,6 +4,7 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphics}
+\usepackage{listings}
 \usepackage{verbatim}
 %\setbeamertemplate{navigation symbols}{}
 
@@ -218,13 +219,27 @@
 		\end{frame}
 	    \begin{frame}
 			\frametitle{process table}
-			\includegraphics[height=0.45\columnwidth]{pics/ps.png}<1>%
+			\includegraphics[height=0.4\columnwidth]{pics/ps.png}<1>%
 		\end{frame}
     \subsection{Startup Scripts}
 	    \begin{frame}
-			\frametitle{Startup Scripts}
+			\frametitle{As we are speaking of it...}
 			\begin{itemize}
-                \item<2-> init.d rc.d
+                \item<1-> the init-process (PID 1) are able to start scripts in various ways
+                \item<1-> inittab (like in the SMU-book)
+                \item<1-> Entry looks like '1:2345:respawn:/sbin/getty 38400 tty1'
+                \item<2-> The entrys are 'id:runlevels:action:command'
+                \begin{tabular}{lll}
+                Entry & description \\
+                id & Identifier \\
+                runlevels & indicates in which runlevels the command should be started \\
+                action & what action should be taken for this command, it may included:
+                & sysinit & perform system initalization \\
+                & wait & wait for the process to complete \\
+                & once & run the process once only \\
+                & respawn & restart the process whenever it dies
+                commands & specifies the shell command to be run
+                \end{tabular}
             \end{itemize}
 		\end{frame}
     \subsection{User-/Group-Handling}
