@@ -1,4 +1,5 @@
-\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+%\documentclass[draft,hyperref={pdfpagelabels=false}]{beamer}
+\documentclass[handout]{beamer}
 \let\Tiny=\tiny
 \hypersetup{pdfpagemode=FullScreen}
 \usepackage[ngerman]{babel}
@@ -16,6 +17,9 @@
 \useoutertheme{smoothbars}
 %\useoutertheme{sidebar}
 
+\definecolor{lGray}{gray}{.90}
+
+\newcommand{\code}[1]{\colorbox{lGray}{\texttt{#1}}}
 \author{Christian Kniep}
 
 \begin{document}
@@ -44,7 +48,6 @@
                     \item<4-> a command, textfile, archive, etc.
                     \item<5-> a resources, setting
                 \end{itemize}
-                \item<6-> actually every file is a stream of byte, but lets skip that...
             \end{itemize}
 		\end{frame}
     \subsection{Filesystem}
@@ -71,8 +74,8 @@
                 \begin{itemize}
                     \item<2-> historical types
                     \begin{itemize}
-                        \item<2-> \textbf{s5}
-                        \item<2-> \textbf{msdos},\textbf{pcfs}
+                        \item<2-> \textbf{s5} for the old SystemV OS
+                        \item<2-> \textbf{msdos},\textbf{pcfs} for old versions of DOS / Windows
                     \end{itemize}
                     \item<3-> to use windows-partitions
                     \begin{itemize}
@@ -85,24 +88,24 @@
         \begin{frame}
 			\frametitle{File System Types 2}
             \begin{itemize}
-                \item<1-> not that common
-                \begin{itemize}
-                    \item<1-> \textbf{ufs(2)} for FreeBSD
-                    \item<1-> \textbf{bfs} boot file system for SystemV
-                \end{itemize}
-                \item<2-> in broad use
-                \begin{itemize}
-                    \item<2-> \textbf{iso9660},\textbf{hsfs} for cdroms
-                    \item<2-> \textbf{proc},\textbf{procfs} pseudo-FS in the memory to handle processes 
-                    \item<2-> \textbf{ext2},\textbf{ext3} RedHat,debian-derivates
-                    \item<2-> \textbf{xfs} SUSE 
-                \end{itemize}
-                \item<3-> upcomming
-                \begin{itemize}
-                    \item<3-> \textbf{ext4} due to long history of ext2,ext3
-                    \item<3-> \textbf{zfs} pushed by sun, manage a consistant FS
-                    \item<3-> \textbf{btfs} speak BetterFS, like ZFS but OpenSource
-                \end{itemize}                
+                    \item<1-> not that common
+                    \begin{itemize}
+                        \item<1-> \textbf{ufs(2)} for FreeBSD
+                        \item<1-> \textbf{bfs} boot file system for SystemV
+                    \end{itemize}
+                    \item<2-> in broad use
+                    \begin{itemize}
+                        \item<2-> \textbf{iso9660},\textbf{hsfs} for cdroms
+                        \item<2-> \textbf{proc},\textbf{procfs} pseudo-FS in the memory to handle processes 
+                        \item<2-> \textbf{ext2},\textbf{ext3} RedHat,debian-derivates
+                        \item<2-> \textbf{xfs} SUSE 
+                    \end{itemize}
+                    \item<3-> upcomming
+                    \begin{itemize}
+                        \item<3-> \textbf{ext4} due to long history of ext2,ext3
+                        \item<3-> \textbf{zfs} pushed by sun, manage a consistant FS
+                        \item<3-> \textbf{btfs} speak BetterFS, like ZFS but OpenSource
+                    \end{itemize}                
             \end{itemize}
 		\end{frame}
     	\begin{frame}
@@ -126,8 +129,8 @@
 			\frametitle{mount,umount}
 			\begin{itemize}
                 \item<1-> if you want a device be part of your 'File-System'-tree?
-                \item<1-> use 'mount -t type device mountpoint' to do it
-                \item<2-> if you want it to disapear use 'umount device' or 'umount mountpoint'
+                \item<1-> use \code{mount -t type device mountpoint} to do it
+                \item<2-> if you want it to disapear use \code{umount device} or \code{umount mountpoint}
             \end{itemize}
 		\end{frame}
     \subsection{Fsck: File System Checking}
@@ -227,55 +230,102 @@
 			\begin{itemize}
                 \item<1-> the init-process (PID 1) are able to start scripts in various ways
                 \item<1-> inittab (like in the SMU-book)
-                \item<1-> Entry looks like '1:2345:respawn:/sbin/getty 38400 tty1'
-                \item<2-> The entrys are 'id:runlevels:action:command'
-                \begin{tabular}{lll}
-                Entry & description \\
-                id & Identifier \\
-                runlevels & in which runlevels the command should be started \\
-                action & what action should be taken for this command, maybe: \\
-                & sysinit & perform system initalization \\
-                & wait & wait for the process to complete \\
-                & once & run the process once only \\
-                & respawn & restart the process whenever it dies \\
-                commands & specifies the shell command to be run
-                \end{tabular}
+                \item<1-> Entry looks like \code{1:2345:respawn:/sbin/getty 38400 tty1}
+                \item<2-> The entrys are \code{id:runlevels:action:command}
+                \begin{itemize}
+                    \item[id] Identifier 
+                    \item[runlevel] in which runlevels the command should be started 
+                    \item[action] what action should be taken for this command, maybe:
+                    \item[commands] specifies the shell command to be run
+                \end{itemize}
             \end{itemize}
 		\end{frame}
     \subsection{User-/Group-Handling}
 	    \begin{frame}
 			\frametitle{add Users}
 			\begin{itemize}
-                \item<1-> if you simply want to add a user you user 'useradd USERNAME' \\
+                \item<1-> if you simply want to add a user you user \code{useradd USERNAME} \\
                           The User will be created without any further Questions. \\
-                          Parameters like '-G,-g,-s' are possible to add more information
-                \item<2-> if you want to be guided you should use 'adduser USERNAME' \\
+                          Parameters like \code{-G,-g,-s} are possible to add more information
+                \item<2-> if you want to be guided you should use \code{adduser USERNAME} \\
                          You will be asked about the Username and some other Information
-                \item<3-> To alter user information you use 'usermod USERNAME'
-                \item<4-> 'userdel USERNAME' deletes the user (-r wipes the home too)
+                \item<3-> To alter user information you use \code{usermod USERNAME}
+                \item<4-> \code{userdel USERNAME} deletes the user (-r wipes the home too)
             \end{itemize}
 		\end{frame}
 	    \begin{frame}
 			\frametitle{Groups}
 			\begin{itemize}
-                \item<1-> same as for users (groupadd, groupdel,groupmod) 
+                \item<1-> same as for users (\code{groupadd}, \code{groupdel},\code{groupmod})
+                \item<2-> the information are stored in \code{/etc/groups}
             \end{itemize}
 		\end{frame}
 	    \begin{frame}
 			\frametitle{/etc/passwd}
 			\begin{itemize}
                 \item<1-> As we said earlier, all settings are stored in files
-                \item<1-> So do usersetings:
+                \item<1-> So do usersetings: \\
+                \scriptsize{
+                    $\underbrace{\code{root}}_{\texttt{name}}$:
+                    $\underbrace{\code{S3ah8kaR}}_{\texttt{crypt. PW}}$:
+                    $\underbrace{\code{0}}_{\texttt{uid}}$:
+                    $\underbrace{\code{0}}_{\texttt{gid}}$:
+                    $\underbrace{\code{System Administrator}}_{\texttt{description}}$:
+                    $\underbrace{\code{/var/root}}_{\texttt{home-dir}}$:
+                    $\underbrace{\code{/bin/sh}}_{\texttt{command/shell}}$
+                    } \\
+                \scriptsize{
+                    \code{kniep}:
+                    \code{...}:
+                    $\underbrace{\code{1000}}_{\texttt{uid > 999}}$:
+                    $\underbrace{\code{1000}}_{\texttt{gid > 999}}$:
+                    $\underbrace{\code{Christian Kniep,,,}}_{\texttt{GECO-String}}$:
+                    \code{/home/kniep}:
+                    \code{/bin/bash}
+                    }
+                \item<1-> Some User-ID explanation :
+                \begin{itemize}
+                    \item<1-> From start there where 15bit UID ($2^{15}=32768$)
+                    \item<1-> modern systems may provide more (now up to 64)
+                    \item[id=0]<1-> tied to the root-User                    
+                    \item[id\textless100]<1-> reserved for system-user                    
+                    \item[id\textless1000]<1-> reserved for users which are running services                    
+                    \item[id\textgreater999]<1-> normal useraccounts
+                    \item[id=32767]<1-> traditionally the user nobody (opposite to root)
+                \end{itemize}
             \end{itemize}
-		\end{frame}
+        \end{frame}
     \subsection{Backup \& Restore}
 	    \begin{frame}
-			\frametitle{Backup \& Restore}
+			\frametitle{you shoud now}
 			\begin{itemize}
-                \item<2-> 'dump, tar' vs 'rsync,dd'
+                \item<1-> since everything is a file you shoud backup the whole
+                filesystem, so you will be well prepared for malfunction
+                \item<1-> there are a couple of ways to do that:
+                \begin{itemize}
+                    \item[dump]<1-> according to the book you could use dump,
+                                    this will copy blockwise on e.g. a tape
+                    \item[tar]<1-> tar is the right choice to zip files/directorys
+                    \item[dd]<1-> with (one name-legend said) DiskDump you could copy a data stream.\\
+                    This could be a harddisk, or a file, 'you name it!'. The beauty of it is the simplicity and the power. \\
+                    You could cut byte out, count it, whatever you want.
+                \end{itemize}
             \end{itemize}
 		\end{frame}
-
-
+        \begin{frame}
+            \frametitle{additional stuff}
+			\begin{itemize}
+                \item[split]<1-> do you want to split a large file in many smaller ones?
+                \begin{itemize}
+                    \item<1-> \code{split -a 1 -l 50 test.txt c} \\
+                        This will split the test.txt in files ca,cb,cc,.. containing 50 lines
+                    \item<1-> \code{split -a 1 -b 50 m test.img d} \\
+                        This will split the test.img in files da,db,dc,.. containing 50MB
+                \end{itemize}
+                \item[cat]<1-> to bring them back together you use: \\
+                            \code{cat c* > test.txt} \\
+                            \code{cat d* > test.img} \\
+			\end{itemize}
+		\end{frame}
 
 \end{document}
