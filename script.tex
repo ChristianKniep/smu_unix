@@ -221,18 +221,51 @@
 			\frametitle{process table}
 			\includegraphics[height=0.4\columnwidth]{pics/ps.png}<1>%
 		\end{frame}
+    \subsection{Startup Scripts}
+	    \begin{frame}
+			\frametitle{As we are speaking of it...}
+			\begin{itemize}
+                \item<1-> the init-process (PID 1) are able to start scripts in various ways
+                \item<1-> inittab (like in the SMU-book)
+                \item<1-> Entry looks like '1:2345:respawn:/sbin/getty 38400 tty1'
+                \item<2-> The entrys are 'id:runlevels:action:command'
+                \begin{tabular}{lll}
+                Entry & description \\
+                id & Identifier \\
+                runlevels & in which runlevels the command should be started \\
+                action & what action should be taken for this command, maybe: \\
+                & sysinit & perform system initalization \\
+                & wait & wait for the process to complete \\
+                & once & run the process once only \\
+                & respawn & restart the process whenever it dies \\
+                commands & specifies the shell command to be run
+                \end{tabular}
+            \end{itemize}
+		\end{frame}
     \subsection{User-/Group-Handling}
 	    \begin{frame}
-			\frametitle{Users}
+			\frametitle{add Users}
 			\begin{itemize}
-                \item<2-> Will be used in Unit X
-                \item<2-> useradd, adduser, usermod, chown
+                \item<1-> if you simply want to add a user you user 'useradd USERNAME' \\
+                          The User will be created without any further Questions. \\
+                          Parameters like '-G,-g,-s' are possible to add more information
+                \item<2-> if you want to be guided you should use 'adduser USERNAME' \\
+                         You will be asked about the Username and some other Information
+                \item<3-> To alter user information you use 'usermod USERNAME'
+                \item<4-> 'userdel USERNAME' deletes the user (-r wipes the home too)
             \end{itemize}
 		\end{frame}
 	    \begin{frame}
 			\frametitle{Groups}
 			\begin{itemize}
-                \item<2-> chgrp,addgroup
+                \item<1-> same as for users (groupadd, groupdel,groupmod) 
+            \end{itemize}
+		\end{frame}
+	    \begin{frame}
+			\frametitle{/etc/passwd}
+			\begin{itemize}
+                \item<1-> As we said earlier, all settings are stored in files
+                \item<1-> So do usersetings:
             \end{itemize}
 		\end{frame}
     \subsection{Backup \& Restore}
