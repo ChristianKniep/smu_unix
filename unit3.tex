@@ -1,0 +1,228 @@
+\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+%\documentclass[handout]{beamer}
+\let\Tiny=\tiny
+\hypersetup{pdfpagemode=FullScreen}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{verbatim}
+%\setbeamertemplate{navigation symbols}{}
+
+\usetheme{Boadilla}
+
+\usecolortheme{beaver}
+\usefonttheme{professionalfonts}
+\useinnertheme{rounded}
+\useoutertheme{smoothbars}
+%\useoutertheme{sidebar}
+
+\definecolor{lGray}{gray}{.90}
+
+\newcommand{\code}[1]{\colorbox{lGray}{\texttt{#1}}}
+\author{Christian Kniep}
+
+\begin{document}
+\title[UNIX Unit 3]{Advanced Operating System with UNIX \\ Unit 3 Processes}  
+\institute[ICAT Bandung]{Internation Center of Applied Technologies Bandung}
+\date[\today]{\today} 
+
+\begin{frame}
+	\titlepage
+\end{frame} 
+
+\begin{frame}
+	\frametitle{Table of content}
+	\tableofcontents
+\end{frame} 
+
+
+\section{3.1 Introduction}
+    \subsection{address space \& data structure}
+		\begin{frame}
+			\frametitle{What is a process?}
+			\begin{itemize}
+				\item<1-> A process under UNIX consists of an  address space and a set of data structures in the kernel to keep track of that process.
+                \item<2-> The memory-section contains:
+                \begin{itemize}
+                    \item<2-> the code to execute
+                    \item<2-> the process stack
+                \end{itemize}
+                \item<3-> The kernel keeps track of:
+                \begin{itemize}
+                    \item<3-> adress space map
+                    \item<3-> current status of the process
+                    \item<3-> execution priority of the process
+                    \item<3-> resource usage of the process
+                    \item<3-> current signal mask
+                    \item<3-> owner of the process
+                \end{itemize}
+            \end{itemize}
+		\end{frame}
+    \subsection{what defines a process}
+		\begin{frame}
+			\frametitle{what you might see}
+			\begin{itemize}
+				\item<1-> A process has certain attributes, including these:
+                \begin{itemize}
+                    \item[PID]<1-> The unique identifier of a process
+                    \item[PPID]<2-> The parents PID (from whom the process are started)
+                    \item[UID]<3-> the UserID of the user who owns the process
+                    \item[GID]<4-> the GroupID of the owner
+                    \item[EUID]<5-> the EffectiveUserID
+                    \item[EGID]<5-> the EffectiveGroupID
+                    \item<6-> WTF,what is that suppose to mean!?
+                    \item[Priority]<7-> Priority (urgency) the process runs at
+                \end{itemize}
+            \end{itemize}
+		\end{frame}
+        \begin{frame}
+            \frametitle{The ps-Command}
+            \begin{itemize}
+                \item<1-> The command \code{ps -l}
+                \code{F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD}
+                \code{4 R\ \ 0  6843  6842  0  80   0 -  1065 -  \ \ \  pts/0    00:00:00 bash}
+                \code{0 R\ \ 0  7552  6843  0  80   0 -  \ 872 - \ \ \  pts/0    00:00:00 ps}
+                \item<2-> \textbf{F} (PROCESS FLAGS)
+                \begin{tabular}{ll}
+                    \textbf{1}  & forked but didn't exec \\
+                    \textbf{4}  & used super-user privileges \\
+                    \textbf{30} & according to the book 'loaded into memory'
+                \end{tabular}
+                \item<3-> \textbf{S} (PROCESS STATE CODES)
+                \begin{tabular}{ll}
+                    \textbf{D} & Uninterruptible sleep (usually IO) \\
+                    \textbf{R} & Running or runnable (on run queue) \\
+                    \textbf{S} & Interruptible sleep (waiting for an event to complete) \\
+                    \textbf{Z} & Defunct ("zombie") process, terminated but not reaped by its parent.
+                \end{tabular}
+            \end{itemize}
+        \end{frame}
+        \begin{frame}
+            \frametitle{The ps-Command}
+            \begin{itemize}
+                \item<1-> \textbf{PID} The ProcessID
+                \item<2-> \textbf{PPID} The ParentProcessID
+                \item<2-> (\textbf{PGRPID} The ProcessGRouPID)
+                \item<3-> \textbf{PRI} The priority of the process
+                \item<4-> \textbf{NI} Nice value; used in priority computation 
+                \begin{itemize}
+                    \item<4-> the lower the value of PRI and NI the higher the priority
+                    \item<5-> if a process uses the CPU the PRI-value will raise the nice value
+                \end{itemize}
+                \item<6-> \textbf{P} Which processor runs the process 
+                \item<7-> \textbf{SZ (VSZ)} (Virtual) Memory is used 
+                \item<8-> \textbf{TTY} The terminal the process is running at
+                \item<9-> \textbf{Time} The cumultative execution time
+                \item<10-> \textbf{COMD} The executed command
+            \end{itemize}
+        \end{frame}
+\section{3.2 Processes Priority}
+    \subsection{Scheduling}
+        \begin{frame}{resources}
+            \begin{itemize}
+                \item<1-> reward patience
+                \begin{itemize}
+                    \item<1-> those who have used the least will get access served
+                    \item<2-> those who waits for an event will get higher prio (e.g. keyboard)
+                \end{itemize}
+                \item<3-> The CPU is the most wanted resource. Tied together with the other (such as RAM, Harddrive, Network, etc.) it defines the throughput of an machine
+                \item<4-> nice
+                \begin{itemize}
+                    \item<5-> the nice-command allows the user to manipulate the internal scheduler
+                    \item<6-> only a administrator can set a higher priority (lower value)
+                    \item<7-> depending on the Unix-flavor the the increments and syntax is different
+                \end{itemize}
+            \end{itemize}
+        \end{frame}
+\section{3.3 Other Related Commands}
+    \begin{frame}{resources}
+        \begin{itemize}
+            \item[top]<1-> have a live updating view on the system processes
+            \begin{itemize}
+                \item<2-> There are many childs of top with different approaches
+                \item[htop]<2-> more information with better formating
+                \item[ntop]<2-> network-performance (what process does what)
+                \item[...]<2-> and so on
+            \end{itemize}
+            \item[lsof]<3-> to have a look what files are opend (maybe have to be installed first)
+            \item[fuser]<4-> what process is using certain files
+        \end{itemize}
+    \end{frame}
+\section{3.4 The fork() System Call}
+    \subsection{Explaination}
+    \begin{frame}{What is it?}
+        \begin{itemize}
+            \item<1-> fork() creates a new process
+            \item<2-> the memory allocated to the process will be duplicated
+            \item<3-> from this line on both processes running the same code
+        \end{itemize}
+    \end{frame}
+\section{3.5 Child Process Termination}
+    \subsection{relationships}
+    \begin{frame}{Who was first?}
+        \begin{itemize}
+            \item<1-> if a child dies, the parent has to recognize it
+            \item<2-> if the parent don't, the child will bekomm a 'zombie'
+        \end{itemize}
+    \end{frame}
+\section{3.6 Inter Process Communication}
+    \begin{frame}{Whats out there?}
+        \begin{itemize}
+            \item<1-> \textbf{Pipes} Point to point, only one way
+            \item<2-> \textbf{Named Pipes} Looks like a file, thing about it like a spot
+            \item<3-> \textbf{Message queues} FIFO
+            \item<4-> \textbf{Semaphores} Guarded line
+            \item<5-> \textbf{Shared Memory} Use the same adresses
+            \item<6-> \textbf{Sockets} FIFO in a network
+        \end{itemize}
+    \end{frame}
+    \subsection{3.6.1 Pipes}
+    \begin{frame}{Point to Point with FIFO}
+        \begin{itemize}
+            \item<1-> One-Way communication from one entity to another
+            \item<2-> Has an INode but no reference on it, so its \textbf{NOT} a file
+            \item<3-> with \code{read} and \code{write} you could use it
+        \end{itemize}
+    \end{frame}
+    \subsection{3.6.2 Named Pipes}
+    \begin{frame}{A Pipe With a Name}
+        \begin{itemize}
+            \item<1-> Like pipes, but both ways and
+            \item<2-> they are a file
+            \item[$\Rightarrow$]<3-> You have to \code{open()} it first
+        \end{itemize}
+    \end{frame}
+    \subsection{3.6.2 Message Queues}
+    \begin{frame}{a bit organized}
+        \begin{itemize}
+            \item<2-> messages have types (nubmer,msg)
+            \item<2-> you could read only type-number X
+            \item<3-> could be private (only parent and childs) or public
+        \end{itemize}
+    \end{frame}
+    \subsection{3.6.3 Semaphores}
+    \begin{frame}{guard}
+        \begin{itemize}
+            \item<1-> its like a queue with a counter
+            \item<2-> it could seperate enemies
+            \item<3-> or unites friends
+            \item<4-> its based on a flag and a queue
+        \end{itemize}
+    \end{frame}
+    \subsection{3.6.4 Shared Memory}
+    \begin{frame}{on the edge}
+        \begin{itemize}
+            \item<1-> if you want be fast, why transfer it?
+            \item<2-> if you use the same memory-address you don't have to
+        \end{itemize}
+    \end{frame}
+    \subsection{3.6.5 Sockets}
+    \begin{frame}{over the network}
+        \begin{itemize}
+            \item<1-> like named pipes not based on files, but on network-ports
+        \end{itemize}
+    \end{frame}
+
+    
+\end{document}
