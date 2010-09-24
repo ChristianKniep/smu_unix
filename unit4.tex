@@ -1,0 +1,164 @@
+\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+%\documentclass[handout]{beamer}
+\let\Tiny=\tiny
+\hypersetup{pdfpagemode=FullScreen}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{verbatim}
+%\setbeamertemplate{navigation symbols}{}
+
+\usetheme{Boadilla}
+
+\usecolortheme{beaver}
+\usefonttheme{professionalfonts}
+\useinnertheme{rounded}
+\useoutertheme{smoothbars}
+%\useoutertheme{sidebar}
+
+\definecolor{lGray}{gray}{.90}
+
+\newcommand{\code}[1]{\colorbox{lGray}{\texttt{#1}}}
+\author{Christian Kniep}
+
+\begin{document}
+\title{Advanced Operating System with UNIX \\ Unit 4 - Getting Started}  
+\institute[ICAT Bandung]{Internation Center of Applied Technologies Bandung}
+\date[\today]{\today} 
+
+\begin{frame}
+	\titlepage
+\end{frame} 
+
+
+\section{Introduction} 
+	\subsection{User Account Setup}
+		\begin{frame}{Why you are able to work with the System}
+			\begin{itemize}
+				\item<1-> Please read Section 4.1 and 4.1.1
+                \item<2-> What is a username?
+                \item<3-> What the deal with the initial password?
+            \end{itemize}
+		\end{frame}
+	\subsection{Logging in}
+		\begin{frame}{Log onto the machine}
+			\begin{itemize}
+				\item<1-> Please read Section 4.1.2
+                \item<2-> Why is your password not shown when you type it, \\
+                            Windows has at least asterisks?
+                \item<3-> \code{gray:*:1001:1001:Gray Ho:/home/gray:/bin/bash} \\
+                            What is the Problem if you get
+                \begin{itemize}
+                    \item<4-> \code{Could not chdir /home/test: No such file or directory}
+                    \item<5-> \code{Permission denied, please try again.}
+                    \item<6-> \code{ssh\_exchange\_identification: Connection closed}
+                \end{itemize}
+            \end{itemize}
+		\end{frame}
+	\subsection{Login Succeeds}
+		\begin{frame}{Whats next}
+			\begin{itemize}
+				\item<1-> Please read Section 4.1.3
+                \item<2-> Whats the 'Message Of The Day'
+                \item<3-> What other messages could appear?
+                \item<4-> What is the 'prompt'
+                \item<5-> PS1?
+            \end{itemize}
+		\end{frame}
+\section{Different Privileges}
+    \subsection{Short}
+    	\begin{frame}{Privileges and Permissions}
+			\begin{itemize}
+				\item<1-> Please read Section 4.2
+                \item<2-> Why do we want different Privileges?
+                \item<3-> What permissions-triples do you know?
+            \end{itemize}
+		\end{frame}
+\section{Logging Out}
+    \subsection{Short}
+    	\begin{frame}{Getting stoped}
+			\begin{itemize}
+				\item<1-> Please read Section 4.3
+                \item<2-> What are possible ways to get out?
+            \end{itemize}
+		\end{frame}
+\section{Using Commands}
+    \subsection{Introduction}
+    	\begin{frame}{what to do?}
+			\begin{itemize}
+				\item<1-> Please read Section 4.4
+                \item<2-> Why do you need commands?
+            \end{itemize}
+        \end{frame}
+    \subsection{What Is a Command?}
+    	\begin{frame}{definition?}
+			\begin{itemize}
+				\item<1-> Please read Section 4.4.1
+                \item<2-> What is it?
+                \item<3-> What are common options for \code{ls}
+            \end{itemize}
+		\end{frame}
+    \subsection{Redirecting Input and Output}
+    	\begin{frame}{stdin - stdout}
+			\begin{itemize}
+				\item<1-> Please read Section 4.4.2
+                \item<2-> Who wants to try it?
+            \end{itemize}
+		\end{frame}
+    \subsection{Configuring Your Environment}
+    	\begin{frame}{Introduction,Viewing and Setting the Environment}
+			\begin{itemize}
+				\item<1-> Please read Section 4.4.3 and 4.4.3.1
+                \item<2-> What is the environment?
+                \item<3-> Why do we need it?
+                \item<4-> how could you have a look at it?
+            \end{itemize}
+		\end{frame}
+    \subsection{Using Shell Startup Files}
+    	\begin{frame}{bashrc and alike}
+			\begin{itemize}
+				\item<1-> Please read Section 4.4.3.2
+                \item<2-> Whats the advantage of the startup-scripts?
+            \end{itemize}
+		\end{frame}
+    \subsection{Configuring with rc files}
+    	\begin{frame}{The hidden setting}
+			\begin{itemize}
+				\item<1-> Please read Section 4.4.3.3
+                \item<2-> Why is it clever to store the settings of your user in your home-dir?
+                \item<3-> What is the advantage when you have multiple machine and a central home?
+            \end{itemize}
+		\end{frame}
+    \subsection{Managing Your Password}
+    	\begin{frame}{Safty First!}
+			\begin{itemize}
+				\item<1-> Please read Section 4.5
+                \item<2-> Who you gonna tell the password?
+                \item<3-> Some strategies to avoid easy to guess PW?
+                \item<4-> Tipp: Use first chars out of sentences. \\
+                 \textbf{M}y \textbf{p}assword \textbf{1}s \textbf{s}ecure. \textbf{N}obody \textbf{w}ill \textbf{g}uess \textbf{1}t.
+                \item[$\Rightarrow$]<5-> Mp1sNwg1
+            \end{itemize}
+		\end{frame}
+    \subsection{control characters}
+    	\begin{frame}{Some special chars}
+			\begin{itemize}
+				\item<1-> Please read Section 4.6 and 4.6.*
+                \item<2-> What are these special chars for?
+                \item<3-> In my Opinion the most used: \code{ctrl-C} and \code{ctrl-D}
+            \end{itemize}
+		\end{frame}
+    \subsection{Online Help}
+    	\begin{frame}{Help, I need somebody..}
+			\begin{itemize}
+				\item<1-> Please read Section 4.7
+                \item<2-> What are the two ways to get help?
+                \item<3-> whats teh man page?
+                \item<4-> and \code{--help} / \code{-h} or \code{-?}?
+                \item<5-> \code{man -k}?
+            \end{itemize}
+		\end{frame}
+
+
+\end{document}
