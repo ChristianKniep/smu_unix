@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage{url}
+
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{color}
+
+\author{Christian Kniep}
+\title{Advanced Operating System with UNIX Exam}
+\date{\today}
+%----------------------------
+\begin{document}
+\maketitle
+\section*{UNIX Test}
+If there is now value in braces then you will earn 1 point per default
+\subsection*{UNIT 1 Review OS}
+\begin{enumerate}
+    \item What is the purpose of an OS (operating system)? \\
+    \\
+    \\
+    \item What is the central thing most operating systems have in common? Even if they called it different. \\
+    \\    
+\end{enumerate}
+
+\newpage
+\subsection*{UNIT 2 File System}
+\begin{enumerate}
+    \item Please draw an example file-system tree, with at least two standard directorys and one file. \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \item What is the swap for? \\
+    \\
+    \\
+    \\
+    \\
+    \item Give a short explanation about the connections between 'Blocks', 'INodes', 'Filenames'.\\
+    \\
+    \\
+    \\
+    \item Why do we need fsck (File System Check)? \\
+    \\
+    \\
+    \\    
+\end{enumerate}
+
+\newpage
+\subsection*{UNIT 3 Processes}
+\begin{enumerate}
+    \item Explain at least three of this process-attributes:
+    \begin{itemize}
+        \item UID
+        \item EUID
+        \item PID
+        \item PPID
+        \item GID
+        \item PRI
+    \end{itemize}
+    \item What is a child? \\
+    \\
+    \\
+    \item What is a zombie State? \\
+    \\
+    \\
+    \item Explain at least three of the following interprocess comunication techniques:
+    \begin{itemize}
+        \item Pipes
+        \item Named Pipes
+        \item Message queues
+        \item Semaphores
+        \item Shared Memory
+        \item Sockets
+    \end{itemize}
+\end{enumerate}
+
+\newpage
+\subsection*{UNIT 4 Begining with UNIX}
+\begin{enumerate}
+    \item Where do you find the central file which holds the basic user information? \\
+    \\
+    \item Why is it clever to have permissions? \\
+    \\
+    \\
+    \item What is the difference between the output redirection with '\textgreater','\textgreater\textgreater', '1\textgreater' and '2\textgreater' \\
+    \\
+    \\
+    \item What is the purpose of the environment? \\
+    \\
+    \\
+    \\
+\end{enumerate}
+
+\newpage
+\subsection*{UNIT 5 UNIX File System}
+\begin{enumerate}
+    \item Write down the commands to... (the names are free to choose)
+    \begin{itemize}
+        \item create a directory in your home-directory (make sure you are there)
+        \item create a file within the created directorys
+        \item rename the file
+        \item delete the created directory
+    \end{itemize}
+    \item What are the three types of UNIX files? \\
+    \\
+    \\
+    \\
+    \item How to change the permissions of file to the following:
+    \begin{enumerate}
+        \item \texttt{rwxrw-rw-}: \texttt{\$}
+        \item \texttt{rwx------}: \texttt{\$}
+        \item \texttt{rw-r--r--}: \texttt{\$}
+    \end{enumerate}
+    \item What is the umask? \\
+    \\
+    \\
+\end{enumerate}
+
+\newpage
+\subsection*{UNIT 6 Managing Data files in UNIX}
+\begin{enumerate}
+    \item What is the difference between 'ls' and 'ls -l'? \\
+    \\
+    \\
+    \\
+    \item Give a short description of the different blocks of this output: \\
+    \texttt{-rwxr-xr-x 2 test test 296 2010-08-03 13:58 file} \\
+    \\
+    \\
+    \\
+    \\
+    \item PatternMatching:
+    \begin{itemize}
+        \item Please list for all files that starts with 'file'. \\
+        \\
+        \item Please list all files that have \textbf{one} unknown character in front of 'file' (e.g. '1file'). \\
+        \\
+        \item Please create a listing command which includes the files 'file.txt', 'file.doc' and 'file.cfg'. \\
+        \\
+    \end{itemize}
+    \item How could you locate files with various search criterias? \\
+    \\
+\end{enumerate}
+
+\newpage
+\subsection*{UNIT 7 Popular Tools in UNIX}
+\begin{enumerate}
+    \item Calculate '1+4' with bc (you start in bash and could use a pipe or the command itself).
+    \item Calculate '2/1' with bc (you have to set one position after decimal point)
+    \item How could you get the current time and date.
+    \item What information do you get if you type 'whoami'?
+    \item What are the two ways to get information about a command and what is the difference?
+\end{enumerate}
+    
+\end{document}
